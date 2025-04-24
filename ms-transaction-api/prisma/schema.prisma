@@ -39,9 +39,9 @@ model Transaction {
   id                      String            @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   accountExternalIdDebit  String            @map("account_external_id_debit") @db.Uuid
   accountExternalIdCredit String            @map("account_external_id_credit") @db.Uuid
-  statusId                Int               @map("transaction_type_id")
+  statusId                Int               @map("transaction_status_id")
   value                   Decimal           @db.Decimal(10, 2)
-  typeId                  Int               @map("transaction_status_id")
+  typeId                  Int               @map("transaction_type_id")
   createdAt               DateTime?         @default(now()) @map("created_at") @db.Timestamp(6)
   type                    TransactionStatus @relation(fields: [typeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   status                  TransactionType   @relation(fields: [statusId], references: [id], onDelete: NoAction, onUpdate: NoAction)

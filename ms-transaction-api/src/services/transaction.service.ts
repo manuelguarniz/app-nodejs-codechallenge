@@ -26,7 +26,10 @@ const tranferFunds = async (
   data: ICreateTransactionRequest,
 ): Promise<ICreateTransactionResponse> => {
   const transaction = await transactionRepository.createTransaction({ ...data });
-  await notificationService.notifyTransaction(transaction);
+  await notificationService.notifyTransaction({
+    ...transaction,
+    value: transaction.value.toNumber(),
+  });
   return {
     operationTransactionId: transaction.id,
   } as ICreateTransactionResponse;
