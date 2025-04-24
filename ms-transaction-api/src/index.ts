@@ -1,4 +1,8 @@
-import 'dotenv/config';
+import app from './app';
+import { PROPS } from './configs/props.config';
 
-console.log('Hello Node');
-console.log('Environment:', process.env.NODE_ENV);
+const port = PROPS.PORT || 3000;
+
+app.listen(port, () => {
+  console.log(`Servidor corriendo en http://localhost:${port}`);
+});
