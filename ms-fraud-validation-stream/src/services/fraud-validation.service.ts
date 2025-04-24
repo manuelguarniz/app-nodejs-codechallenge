@@ -2,7 +2,7 @@ import { TransationStatus } from '../models/transaction-status.enum';
 import { TransactionTransferModel } from '../models/transaction-transfer.model';
 import transactionAuditLogRepository from '../repositories/transaction-audit-log.repository';
 import transactionRepository from '../repositories/transaction.repository';
-import { parseISODate } from '../utils/helper';
+import { parseDate } from '../utils/helper';
 import transactionStatusService from './transaction-status.service';
 
 const transactionProcess = async (data: TransactionTransferModel) => {
@@ -15,7 +15,7 @@ const transactionProcess = async (data: TransactionTransferModel) => {
       previousStatus: currentStatus,
       newStatus: '',
       reason: 'Transaction created',
-      changedAt: parseISODate(createdAt),
+      changedAt: parseDate(createdAt),
       sourceService: 'ms-fraud-validation-stream',
     });
 
@@ -31,7 +31,7 @@ const transactionProcess = async (data: TransactionTransferModel) => {
       previousStatus: currentStatus,
       newStatus: newStatus,
       reason: 'Update transaction status',
-      changedAt: parseISODate(createdAt),
+      changedAt: parseDate(createdAt),
       sourceService: 'ms-fraud-validation-stream',
     });
 

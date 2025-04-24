@@ -1,8 +1,9 @@
 import { Kafka } from 'kafkajs';
+import { PROPS } from './props.config';
 
 export const kafka = new Kafka({
-  clientId: 'appid-transaction-api',
-  brokers: ['localhost:9092'],
+  clientId: PROPS.KAFKA_APPLICATION_ID,
+  brokers: PROPS.KAFKA_BROKERS.split(','),
 });
 
-export const consumer = kafka.consumer({ groupId: 'group-transaction-api' });
+export const consumer = kafka.consumer({ groupId: PROPS.KAFKA_APPLICATION_GROUP });

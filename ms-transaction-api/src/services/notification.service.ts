@@ -1,10 +1,10 @@
-import { Transaction } from '@prisma/client';
 import { producer } from '../configs/kafka.config';
+import { PROPS } from '../configs/props.config';
 
 const notifyTransaction = async (data: any): Promise<void> => {
   await producer.connect();
   await producer.send({
-    topic: 'queue-transaction-validate-stream',
+    topic: PROPS.KAFKA_TRANSACTION_VALIDATE_TOPIC,
     messages: [{ value: JSON.stringify(data) }],
   });
 };

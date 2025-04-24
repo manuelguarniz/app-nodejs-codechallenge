@@ -1,11 +1,12 @@
 import { consumer } from './configs/kafka.config';
 import { log } from './configs/logger.config';
+import { PROPS } from './configs/props.config';
 import fraudValidationService from './services/fraud-validation.service';
 import { transactionSchema } from './zod/transaction.schema';
 
 async function run() {
   await consumer.connect();
-  await consumer.subscribe({ topic: 'queue-transaction-validate-stream', fromBeginning: true });
+  await consumer.subscribe({ topic: PROPS.KAFKA_TRANSACTION_VALIDATE_TOPIC, fromBeginning: true });
 
   await consumer.run({
     eachMessage: async ({ topic, partition, message }) => {
