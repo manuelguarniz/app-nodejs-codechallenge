@@ -1,10 +1,13 @@
 {
-  "openapi": "3.0.0",
+  "openapi": "3.0.4",
   "info": {
     "title": "API Transactions",
     "version": "1.0.0",
     "description": "API for processing transactions"
   },
+  "produces": [
+    "application/json"
+  ],
   "servers": [
     {
       "url": "http://localhost:8080",
@@ -17,7 +20,82 @@
         "summary": "Get health api status",
         "responses": {
           "200": {
-            "description": "Retun OK"
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/transaction/{id}/status": {
+      "get": {
+        "summary": "Get status from transaction",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": "true",
+            "description": "This value is a transction id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/responses/schemas/TransactionResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "responses": {
+    "schemas": {
+      "TransactionStatus": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "enum": "[pending, approved, rejected]",
+            "description": "Transaction Status"
+          }
+        }
+      },
+      "TransactionType": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Transaction Type"
+          }
+        }
+      },
+      "TransactionResponse": {
+        "type": "object",
+        "properties": {
+          "transactionExternalId": {
+            "type": "string",
+            "description": "Transaction ID"
+          },
+          "transactionType": {
+            "$ref": "#/responses/schemas/TransactionType"
+          },
+          "transactionStatus": {
+            "$ref": "#/responses/schemas/TransactionStatus"
+          },
+          "value": {
+            "type": "string",
+            "description": "Transaction Amount"
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Transaction Date",
+            "example": "yyyy-MM-dd HH:mm:ss"
           }
         }
       }

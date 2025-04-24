@@ -17,11 +17,8 @@ export const sendSuccessResponse = <T>(
   res: Response,
   data: T,
   status = HttpStatusCode.OK,
-): Response<SuccessResponse<T>> => {
-  return res.status(status).json({
-    success: true,
-    data,
-  });
+): Response<T> => {
+  return res.status(status).json(data);
 };
 
 export const sendValidationError = <T>(
