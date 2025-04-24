@@ -3,6 +3,7 @@ import { ITransactionResponse } from '../models/response/transaction.response';
 import { parseDate } from '../utils/helper';
 import { ICreateTransactionRequest } from '../models/request/create-transation.request';
 import { ICreateTransactionResponse } from '../models/response/create-transation.response';
+import notificationService from './notification.service';
 
 const checkExistTransaction = async (guid: string): Promise<Boolean> => {
   const transaction = await transactionRepository.getTransaction(guid);
@@ -25,6 +26,7 @@ const tranferFunds = async (
   data: ICreateTransactionRequest,
 ): Promise<ICreateTransactionResponse> => {
   const transaction = await transactionRepository.createTransaction({ ...data });
+  await notificationService.notifyTransaction(transaction);
   return {
     operationTransactionId: transaction.id,
   } as ICreateTransactionResponse;
