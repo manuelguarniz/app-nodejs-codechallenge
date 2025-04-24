@@ -1,17 +1,5 @@
 import { Response } from 'express';
-import HttpStatusCode from './HttpStatusCode';
-
-interface SuccessResponse<T> {
-  success: true;
-  data: T;
-}
-
-interface ErrorResponse<T> {
-  success: false;
-  error: {
-    message: T;
-  };
-}
+import HttpStatusCode from './http-status-code';
 
 export const sendSuccessResponse = <T>(
   res: Response,
@@ -26,13 +14,10 @@ export const sendValidationError = <T>(
   message: T,
   errors: string[],
   status = HttpStatusCode.BAD_REQUEST,
-): Response<ErrorResponse<T>> => {
+): Response<T> => {
   return res.status(status).json({
-    success: false,
-    error: {
-      message: message,
-      errors: errors,
-    },
+    message: message,
+    errors: errors,
   });
 };
 
@@ -40,22 +25,22 @@ export const sendDuplicateError = <T>(
   res: Response,
   message: T,
   status = HttpStatusCode.BAD_REQUEST,
-): Response<ErrorResponse<T>> => {
-  return res.status(status).json({ success: false, error: { message } });
+): Response<T> => {
+  return res.status(status).json({ message });
 };
 
 export const sendNotFoundResponse = <T>(
   res: Response,
   message: T,
   status = HttpStatusCode.NOT_FOUND,
-): Response<ErrorResponse<T>> => {
-  return res.status(status).json({ success: false, error: { message } });
+): Response<T> => {
+  return res.status(status).json({ message });
 };
 
 export const sendErrorResponse = <T>(
   res: Response,
   message: T,
   status = HttpStatusCode.INTERNAL_SERVER_ERROR,
-): Response<ErrorResponse<T>> => {
-  return res.status(status).json({ success: false, error: { message } });
+): Response<T> => {
+  return res.status(status).json({ message });
 };

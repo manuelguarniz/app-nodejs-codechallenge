@@ -25,9 +25,9 @@
         }
       }
     },
-    "/api/transaction/{id}/status": {
+    "/api/transaction/{id}": {
       "get": {
-        "summary": "Get status from transaction",
+        "summary": "Get detail from transaction",
         "parameters": [
           {
             "in": "path",
@@ -49,6 +49,53 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/responses/schemas/SimpleErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/transaction": {
+      "post": {
+        "summary": "Transfer funds",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/responses/schemas/CreateTransactionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/responses/schemas/CreateTransactionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/responses/schemas/DetailErrorResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -56,6 +103,61 @@
   },
   "responses": {
     "schemas": {
+      "DetailErrorResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Error message"
+          },
+          "errors": {
+            "type": "array",
+            "description": "List error messages",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "SimpleErrorResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Error message"
+          }
+        }
+      },
+      "CreateTransactionResponse": {
+        "type": "object",
+        "properties": {
+          "operationTransactionId": {
+            "type": "string",
+            "description": "Transaction ID"
+          }
+        }
+      },
+      "CreateTransactionRequest": {
+        "type": "object",
+        "properties": {
+          "accountExternalIdDebit": {
+            "type": "string",
+            "description": "Account Debit ID"
+          },
+          "accountExternalIdCredit": {
+            "type": "string",
+            "description": "Account Credit ID"
+          },
+          "tranferTypeId": {
+            "type": "number",
+            "description": "Transaction Type"
+          },
+          "value": {
+            "type": "number",
+            "description": "Amount tranfer"
+          }
+        }
+      },
       "TransactionStatus": {
         "type": "object",
         "properties": {

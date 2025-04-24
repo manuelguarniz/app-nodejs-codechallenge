@@ -1,6 +1,8 @@
 import transactionRepository from '../repositories/transaction.repository';
-import { ITransactionResponse } from '../models/transaction.response';
+import { ITransactionResponse } from '../models/response/transaction.response';
 import { parseDate } from '../utils/helper';
+import { ICreateTransactionRequest } from '../models/request/create-transation.request';
+import { ICreateTransactionResponse } from '../models/response/create-transation.response';
 
 const checkExistTransaction = async (guid: string): Promise<Boolean> => {
   const transaction = await transactionRepository.getTransaction(guid);
@@ -19,7 +21,17 @@ const getTransactionDetails = async (guid: string): Promise<ITransactionResponse
   };
 };
 
+const tranferFunds = async (
+  data: ICreateTransactionRequest,
+): Promise<ICreateTransactionResponse> => {
+  const transaction = await transactionRepository.createTransaction({ ...data });
+  return {
+    operationTransactionId: transaction.id,
+  } as ICreateTransactionResponse;
+};
+
 export default {
+  tranferFunds,
   checkExistTransaction,
   getTransactionDetails,
 };

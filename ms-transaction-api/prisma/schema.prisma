@@ -20,7 +20,7 @@ model TransactionAudirLog {
 }
 
 model TransactionStatus {
-  id           Int           @id @default(autoincrement())
+  id           Int           @id
   name         String        @unique @db.VarChar(20)
   transactions Transaction[]
 
@@ -28,7 +28,7 @@ model TransactionStatus {
 }
 
 model TransactionType {
-  id           Int           @id @default(autoincrement())
+  id           Int           @id
   name         String        @db.VarChar(100)
   transactions Transaction[]
 
