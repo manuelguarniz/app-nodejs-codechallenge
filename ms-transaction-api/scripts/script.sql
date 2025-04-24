@@ -6,25 +6,25 @@ create TABLE transactions (
   id UUID PRIMARY key default uuid_generate_v4(),
   account_external_id_debit UUID NOT NULL,
   account_external_id_credit UUID NOT NULL,
-  transaction_type_id INT NOT null references transaction_types(id),
+  transaction_type_id INT NOT null references transaction_types(id) on delete no action,
   value NUMERIC(10, 2) NOT null,
-  transaction_status_id INT NOT NULL references transaction_statuses(id),
+  transaction_status_id INT NOT NULL references transaction_statuses(id) on delete no action,
   created_at TIMESTAMP DEFAULT NOW()
 );
 
 CREATE TABLE transaction_types (
-  id SERIAL PRIMARY KEY,
+  id INT PRIMARY KEY,
   name VARCHAR(100) NOT NULL
 );
 
-INSERT INTO transaction_types (name) VALUES ('transferencia');
+INSERT INTO transaction_types (id, name) VALUES (1, 'transferencia');
 
-CREATE TABLE transaction_statuses (
-  id SERIAL PRIMARY KEY,
+create TABLE transaction_statuses (
+  id INT PRIMARY KEY,
   name VARCHAR(20) UNIQUE NOT NULL
 );
 
-INSERT INTO transaction_statuses (name) VALUES ('pending'), ('approved'), ('rejected');
+INSERT INTO transaction_statuses (id, name) VALUES (1, 'pending'), (2, 'approved'), (3, 'rejected');
 
 CREATE TABLE transaction_audit_logs (
   id SERIAL PRIMARY KEY,
