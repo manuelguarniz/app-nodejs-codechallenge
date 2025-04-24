@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model TransactionAuditLog {
+  id             Int       @id @default(autoincrement())
+  transactionId  String    @map("transaction_id") @db.Uuid
+  previousStatus String?   @map("previous_status") @db.VarChar(20)
+  newStatus      String?   @map("new_status") @db.VarChar(20)
+  changedAt      DateTime? @default(now()) @map("changed_at") @db.Timestamp(6)
+  reason         String?
+  sourceService  String?   @map("source_service") @db.VarChar(50)
+
+  @@map("transaction_audit_logs")
+}
+
+model TransactionStatus {
+  id           Int           @id
+  name         String        @unique @db.VarChar(20)
+  transactions Transaction[]
+
+  @@map("transaction_statuses")
+}
+
+model TransactionType {
+  id           Int           @id
+  name         String        @db.VarChar(100)
+  transactions Transaction[]
+
+  @@map("transaction_types")
+}
+
+model Transaction {
+  id                      String            @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  accountExternalIdDebit  String            @map("account_external_id_debit") @db.Uuid
+  accountExternalIdCredit String            @map("account_external_id_credit") @db.Uuid
+  typeId                  Int               @map("transaction_type_id")
+  value                   Decimal           @db.Decimal(10, 2)
+  statusId                Int               @map("transaction_status_id")
+  createdAt               DateTime?         @default(now()) @map("created_at") @db.Timestamp(6)
+  status                  TransactionStatus @relation(fields: [statusId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  type                    TransactionType   @relation(fields: [typeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("transactions")
+}
