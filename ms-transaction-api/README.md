@@ -5,7 +5,7 @@ Microservicio para recibir transacciones
 ## Dependencias
 
 ```bash
-npm i express express-validator prisma @prisma/client zod swagger-ui-express swagger-jsdoc pino pino-http pino-pretty kafkajs
+npm i express express-validator prisma @prisma/client zod swagger-ui-express swagger-jsdoc pino pino-http pino-pretty kafkajs date-fns
 
 npm -D i @types/express @types/swagger-ui-express @types/node
 ```
